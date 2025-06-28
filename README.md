@@ -13,5 +13,5 @@ Eine kleine Web-App mit Astro und Directus CMS gebaut.
 
 
 ## 🚀 About Me
-I'm Alex Junior Web-Developer
+I'm Alex Junior Web-Developer.
 
