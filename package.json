@@ -9,10 +9,11 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/node": "^9.2.2",
     "@directus/sdk": "^19.1.0",
     "astro": "^5.10.1"
   },
   "engines": {
-  "node": ">=18.20.8"
-}
+    "node": ">=18.20.8"
+  }
 }
