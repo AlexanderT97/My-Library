@@ -1,0 +1,101 @@
+---
+import { ClientRouter } from "astro:transitions";
+import { Image } from "astro:assets";
+import logo from "../img/librarylogo.png";
+---
+
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/favicon/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
+    <meta name="theme-color" content="#f5f3ec" />
+    <title>My Library</title>
+    <ClientRouter />
+  </head>
+
+  <body>
+    <div class="header">
+      <Image src={logo} width={100} height={100} alt={"MyLibraryLogo"} />
+      <h1 class="sr-only">My Library</h1>
+    </div>
+
+    <h2>Tut mir Leid dieses Buch ist nicht in deiner Bibliothek 😕</h2>
+
+    <button><a href="/">Zurück</a></button>
+  </body>
+</html>
+
+<style>
+  * {
+    margin: 0 auto;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  @font-face {
+    font-family: OldFont;
+    src: url(/font/IMFellDWPicaSC-Regular.ttf);
+  }
+
+  body {
+    background-image: url(/img/paper-background.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: "OldFont", serif;
+    color: #1a1d1a;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .header {
+    margin-bottom: 1rem;
+  }
+
+  .sr-only {
+    font-size: 0;
+  }
+
+  h2{
+    text-align: center;
+    font-size: 1.5rem;
+    max-width: 90%;
+  }
+
+  button {
+    background-color: #1a1d1a;
+
+    padding: 0.8rem;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    margin-top: 2rem;
+  }
+
+  button a {
+    text-decoration: none;
+    color: #f5f3ec;
+    text-transform: uppercase;
+    font-family: "OldFont", serif;
+  }
+</style>

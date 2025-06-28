@@ -1,0 +1,171 @@
+---
+import { ClientRouter } from "astro:transitions";
+import { Image } from "astro:assets";
+import logo from "../../img/librarylogo.png";
+import back from "../../img/left.svg";
+
+import directus from "../../lib/directus";
+import { readItems } from "@directus/sdk";
+
+const baseUrl = import.meta.env.PUBLIC_DIRECTUS_URL;
+
+export const prerender = false;
+
+const { slug } = Astro.params;
+
+const books = await directus.request(
+  readItems("books", {
+    filter: {
+      slug: {
+        _eq: slug,
+      },
+    },
+    fields: ["title", "author", "rating", "cover", "slug", "status"],
+  })
+);
+
+const book = books?.[0];
+---
+
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/favicon/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/favicon/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/favicon/site.webmanifest" />
+    <meta name="theme-color" content="#f0e7dd" />
+    <title>{book?.title ?? "Buch nicht gefunden"}</title>
+    <ClientRouter />
+  </head>
+  <body>
+    <div class="header">
+      <a href="/">
+        <Image src={back} alt="zurück" width={30} height={30} class="left" />
+      </a>
+      <Image
+        src={logo}
+        width={100}
+        height={100}
+        alt="MyLibraryLogo"
+        loading={"eager"}
+      />
+    </div>
+
+    <div class="info">
+      {
+        book ? (
+          <>
+            <h1>{book.title}</h1>
+            <p>{book.author}</p>
+            <p style="letter-spacing: 2px;">
+              {Array.from({ length: book.rating }).map(() => "⭐")}
+            </p>
+            <p>Status:</p>
+            <div
+              style={`background-color: ${book.status}; height: 2rem; width: 2rem; border-radius: 50%;`}
+            />
+            <img
+              src={`${baseUrl}/assets/${book.cover}`}
+              alt={book.title}
+              class="cover"
+            />
+          </>
+        ) : (
+          <p>Buch nicht gefunden.</p>
+        )
+      }
+    </div>
+  </body>
+</html>
+
+<style>
+  * {
+    margin: 0 auto;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html::-webkit-scrollbar {
+    display: none;
+  }
+
+  @font-face {
+    font-family: OldFont;
+    src: url(/font/IMFellDWPicaSC-Regular.ttf);
+  }
+
+  body {
+    background-image: url(/img/paper-background.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    font-family: "OldFont", serif;
+    color: #1a1d1a;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  .left {
+    position: absolute;
+    left: 2%;
+    top: 5%;
+  }
+
+  .info {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding-bottom: 4rem;
+  }
+
+  .cover {
+    width: auto;
+    border-radius: 6px;
+    max-height: 500px;
+    box-shadow:
+      rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+      rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  }
+
+  p {
+    font-size: 1.5rem;
+  }
+
+  @media screen and (max-width: 768px) {
+    .info {
+      width: 80%;
+    }
+  }
+
+  @media screen and (max-width: 550px) {
+    .cover {
+      width: 80%;
+    }
+  }
+</style>
